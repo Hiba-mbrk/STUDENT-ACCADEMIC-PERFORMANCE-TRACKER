@@ -1,0 +1,46 @@
+import java.util.Scanner;
+
+public class ConsoleLogin {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Dummy credentials for demonstration
+        String studentUsername = "student";
+        String studentPassword = "1234";
+
+        String teacherUsername = "teacher";
+        String teacherPassword = "1234";
+
+        System.out.println("===== LOGIN PAGE =====");
+        System.out.println("Login as (Student/Teacher): ");
+        String role = sc.nextLine().trim();
+        System.out.println("Enter username: ");
+        String username = sc.nextLine().trim();
+
+        System.out.println("Enter password: ");
+        String password = sc.nextLine().trim();
+
+        boolean loginSuccess = false;
+
+        if (role.equalsIgnoreCase("Student")) {
+            if (username.equals(studentUsername) && password.equals(studentPassword)) {
+                loginSuccess = true;
+                System.out.println("Student login successful!");
+            }
+        } else if (role.equalsIgnoreCase("Teacher")) {
+            if (username.equals(teacherUsername) && password.equals(teacherPassword)) {
+                loginSuccess = true;
+                System.out.println("Teacher login successful!");
+            }
+        } else {
+            System.out.println("Invalid role! Please enter Student or Teacher.");
+        }
+
+        if (!loginSuccess && (role.equalsIgnoreCase("Student") || role.equalsIgnoreCase("Teacher"))) {
+            System.out.println("Invalid username or password!");
+        }
+
+        sc.close();
+    }
+}
