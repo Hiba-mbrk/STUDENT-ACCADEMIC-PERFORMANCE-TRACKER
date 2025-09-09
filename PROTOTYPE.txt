@@ -1,0 +1,97 @@
+import java.util.*;
+
+public class StudentPerformanceTracker {
+
+    static Scanner sc = new Scanner(System.in);
+
+    // Fake student marks database
+    static Map<String, int[]> studentMarks = new HashMap<>();
+
+    public static void main(String[] args) {
+        // Preload some student data
+        studentMarks.put("student1", new int[]{85, 70, 90, 75});
+        studentMarks.put("student2", new int[]{60, 80, 72, 65});
+
+        System.out.println("=== Student Academic Performance Tracker ===");
+        login();
+    }
+
+    static void login() {
+        System.out.print("Enter role (student/teacher): ");
+        String role = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Enter username: ");
+        String username = sc.nextLine().trim();
+
+        System.out.print("Enter password: ");
+        String password = sc.nextLine().trim(); // ignored in prototype
+
+        if (role.equals("student")) {
+            studentDashboard(username);
+        } else if (role.equals("teacher")) {
+            teacherDashboard(username);
+        } else {
+            System.out.println("Invalid role. Try again.");
+            login();
+        }
+    }
+
+    static void studentDashboard(String username) {
+        System.out.println("\n=== Student Dashboard ===");
+        System.out.println("Welcome, " + username);
+
+        if (studentMarks.containsKey(username)) {
+            int[] marks = studentMarks.get(username);
+            showGraph(marks);
+        } else {
+            System.out.println("No marks available for you yet.");
+        }
+    }
+
+    static void teacherDashboard(String username) {
+        System.out.println("\n=== Teacher Dashboard ===");
+        System.out.println("Welcome, " + username);
+
+        System.out.println("1. View Student Performance");
+        System.out.println("2. Upload/Update Marks");
+        System.out.print("Choose option: ");
+        int choice = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        if (choice == 1) {
+            System.out.print("Enter student username: ");
+            String stu = sc.nextLine().trim();
+            if (studentMarks.containsKey(stu)) {
+                showGraph(studentMarks.get(stu));
+            } else {
+                System.out.println("No data for " + stu);
+            }
+        } else if (choice == 2) {
+            System.out.print("Enter student username: ");
+            String stu = sc.nextLine().trim();
+            int[] marks = new int[4];
+            String[] subjects = {"Math", "Science", "English", "History"};
+            for (int i = 0; i < 4; i++) {
+                System.out.print("Enter marks for " + subjects[i] + ": ");
+                marks[i] = sc.nextInt();
+            }
+            studentMarks.put(stu, marks);
+            System.out.println("Marks updated!");
+        }
+    }
+
+    static void showGraph(int[] marks) {
+        String[] subjects = {"Math", "Science", "English", "History"};
+        System.out.println("\n--- Performance Graph ---");
+
+        for (int i = 0; i < subjects.length; i++) {
+            System.out.printf("%-10s | ", subjects[i]);
+            int bars = marks[i] / 2; // scale down
+            for (int j = 0; j < bars; j++) {
+                System.out.print("#");
+            }
+            System.out.println(" (" + marks[i] + ")");
+        }
+        System.out.println("-------------------------\n");
+    }
+}
